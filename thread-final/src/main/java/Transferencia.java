@@ -5,17 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 
 import org.hibernate.annotations.GenericGenerator;
 
+@NamedNativeQueries({ 
+	  @NamedNativeQuery(
+	    name = "callTransferir",
+	    query = "CALL transferir(:cbuLlegada,:cbuSalida,:monto)",
+	    resultClass = Transferencia.class)
+})
 @Entity
 public class Transferencia {
-
-    @Override
-	public String toString() {
-		return "Transferencia [id=" + id + ", fecha=" + fecha + ", monto=" + monto + ", cbuSalida=" + cbuSalida
-				+ ", cbuEntrada=" + cbuEntrada + ", estado=" + estado + ", imagen=" + imagen + "]";
-	}
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -53,9 +55,9 @@ public class Transferencia {
         this.fecha = fecha;
     }
 
-    public Double getMonto() {
-        return monto;
-    }
+	public Double getMonto() {
+		return monto;
+	}
 
     public void setMonto(Double monto) {
         this.monto = monto;
@@ -84,4 +86,20 @@ public class Transferencia {
     public long getId() {
         return id;
     }
+
+	public Boolean getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Boolean imagen) {
+		this.imagen = imagen;
+	}
+	
+    @Override
+	public String toString() {
+		return "Transferencia [id=" + id + ", fecha=" + fecha + ", monto=" + monto + ", cbuSalida=" + cbuSalida
+				+ ", cbuEntrada=" + cbuEntrada + ", estado=" + estado + ", imagen=" + imagen + "]";
+	}
+    
+    
 }

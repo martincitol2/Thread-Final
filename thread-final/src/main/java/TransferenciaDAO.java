@@ -2,7 +2,11 @@ import java.util.List;
 
 public interface TransferenciaDAO {
 	
-	public List<Transferencia> transferenciasMayoresADiezMil();
+	public List<Transferencia> transferenciasPendientes();
 	
-	public List<Transferencia> transferenciasPorId(Long id);
+	public void transferir(String cbuLlegada,String cbuSalida,Double monto);
+	
+	public void cambiarEstadoDeImagen(Long id);
+
+	public List<Transferencia> transferenciaPendientesSinImagen();
 }
