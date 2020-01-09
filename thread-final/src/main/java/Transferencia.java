@@ -5,9 +5,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 
 import org.hibernate.annotations.GenericGenerator;
 
+@NamedNativeQueries({ 
+	  @NamedNativeQuery(
+	    name = "callgetTransfers", 
+	    query = "CALL getTransfers(:cbu_entrada,:cbu_salida,:monto)", 
+	    resultClass = Transferencia.class) 
+	})
 @Entity
 public class Transferencia {
 
@@ -84,4 +92,11 @@ public class Transferencia {
     public long getId() {
         return id;
     }
+
+	public Boolean getImagen() {
+		return imagen;
+	}
+
+ 
+    
 }

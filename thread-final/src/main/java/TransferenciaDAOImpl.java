@@ -1,22 +1,36 @@
 import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public class TransferenciaDAOImpl implements TransferenciaDAO {
 
-	@Autowired
-	EntityManager entityManager;
-	
-	@SuppressWarnings("unchecked")
-	public List<Transferencia> transferenciasMayoresADiezMil() {
-		return (List<Transferencia>) entityManager.createNativeQuery("select * from Transferencia where amount >= 200", Transferencia.class);
+	SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Transferencia.class)
+			.buildSessionFactory();
+
+	Session session = factory.getCurrentSession();
+
+	public List<Transferencia> transferenciasPendientes() {
+		try {
+			session.beginTransaction();
+			return session
+					.createNativeQuery("select * from transferencia where estado = 'PENDIENTE'", Transferencia.class)
+					.getResultList();
+		} finally {
+			session.close();
+			factory.close();
+		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Transferencia> transferenciasPorId(Long id) {
-		return (List<Transferencia>) entityManager.createNativeQuery("select * from Transferencia where id = id",Transferencia.class);
+	public List<Transferencia> transferenciasPendientesSinImagen() {
+		try {
+			session.beginTransaction();
+			return session.createNativeQuery("select * from transferencia where estado = 'PENDIENTE' and imagen = true",
+					Transferencia.class).getResultList();
+		} finally {
+			session.close();
+			factory.close();
+		}
 	}
 
 }
