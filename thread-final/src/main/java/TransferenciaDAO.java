@@ -9,4 +9,6 @@ public interface TransferenciaDAO {
 	public void cambiarEstadoDeImagen(Long id);
 
 	public List<Transferencia> transferenciaPendientesSinImagen();
+	
+	public void cambiarEstadoTransferencia(Long id);
 }

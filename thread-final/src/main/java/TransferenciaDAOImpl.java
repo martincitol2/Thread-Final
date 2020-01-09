@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.hibernate.Session;
@@ -17,9 +17,10 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 		try {
 			session.beginTransaction();
 			return session
-					.createNativeQuery("select * from transferencia where estado = 'Pendiente'", Transferencia.class)
+					.createNativeQuery("select * from transferencia where estado = 'PENDIENTE'", Transferencia.class)
 					.getResultList();
 		} finally {
+			session.close();
 			factory.close();
 		}
 	}
@@ -28,29 +29,33 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 		try {
 			
 			session.beginTransaction();
-			Query<Transferencia> query = session.createQuery("update Transferencia set imagen = true where id = :id",Transferencia.class);
+			@SuppressWarnings("rawtypes")
+			Query query = session.createQuery("update Transferencia set imagen = true where id = :id");
 			query.setParameter("id",(long)id);
 			query.executeUpdate();
 			session.getTransaction().commit();
+			
 		} catch (Exception e) {
 			System.out.println("No se pudo cambiar el estado de la imagen: " + e.getMessage());
+		}finally {
+			session.close();
+			factory.close();
 		}
 
 	}
-
+	
 	public List<Transferencia> transferenciaPendientesSinImagen() {
-		List<Transferencia> transferencias = new ArrayList<Transferencia>();
 		try {
 			session.beginTransaction();
-			transferencias = session
-					.createNativeQuery("select * from transferencia where estado = 'pendiente' and imagen != true",
-							Transferencia.class)
+			return session
+					.createNativeQuery("select * from transferencia where estado = 'PENDIENTE' and imagen = false", Transferencia.class)
 					.getResultList();
-		} catch (Exception e) {
-			System.out.println("No se pudo consultar las transferencias pendientes: " + e.getMessage());
+		} finally {
+			session.close();
+			factory.close();
 		}
-		return transferencias;
 	}
+	
 
 	public void transferir(String cbuLlegada, String cbuSalida, Double monto) {
 		try {
@@ -68,10 +73,31 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 					.setParameter("monto", monto)
 					.executeUpdate();
 			session.getTransaction().commit();
+
 		} catch (Exception e) {
 			System.out.println("No se pudo realizar la transferencia: "+e.getMessage());
+		}finally {
+			session.close();
+			factory.close();
 		}
 		
+	}
+	
+	@Override
+	public void cambiarEstadoTransferencia(Long id) {
+		try {
+			session.beginTransaction();
+			Query<Transferencia> query = session.createQuery("update Transferencia set estado = 'Transferido' where id = :id",Transferencia.class);
+			query.setParameter("id",(long)id);
+			query.executeUpdate();
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+			System.out.println("No se pudo cambiar el estado de la transferencia: "+e.getMessage());
+		}finally {
+			session.close();
+			factory.close();
+		}
 		
 	}
 
