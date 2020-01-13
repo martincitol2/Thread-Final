@@ -2,13 +2,18 @@ import java.util.List;
 
 public class TransferenciaThread extends Thread {
 
+	private List<Transferencia> lista;
+	
+	public TransferenciaThread(List<Transferencia> lista) {
+		this.lista = lista;
+	}
+
 	@Override
 	public void run() {
-
+			
 		while (true) {
 			try {
-				TransferenciaDAOImpl tr = new TransferenciaDAOImpl();
-				List<Transferencia> lista = tr.transferenciasPendientesSinImagen();
+				
 				if (!lista.equals(null)) {
 					for (Transferencia transferencia : lista) {
 						System.out.println(transferencia.getId());

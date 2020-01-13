@@ -1,16 +1,23 @@
+import java.util.List;
 
 public class ThreadPrincipal extends Thread {
 	
 	@Override
 	public void run() {
 		
-		TransferenciaThread hilo1 = new TransferenciaThread();
+		TransferenciaDAOImpl tr = new TransferenciaDAOImpl();
 		
-		TransferenciaThread hilo2 = new TransferenciaThread();
+		List<Transferencia> lista = tr.transferenciasPendientesSinImagen();
 		
-		TransferenciaThread hilo3 = new TransferenciaThread();
+
 		
-		TransferenciaThread hilo4 = new TransferenciaThread();
+		TransferenciaThread hilo1 = new TransferenciaThread(lista.subList(0, 25));
+		
+		TransferenciaThread hilo2 = new TransferenciaThread(lista.subList(25, 50));
+		
+		TransferenciaThread hilo3 = new TransferenciaThread(lista.subList(50, 75));
+		
+		TransferenciaThread hilo4 = new TransferenciaThread(lista.subList(75, 100));
 		
 		hilo1.start();
 		

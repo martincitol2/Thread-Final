@@ -25,7 +25,7 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 	public List<Transferencia> transferenciasPendientesSinImagen() {
 		try {
 			session.beginTransaction();
-			return session.createNativeQuery("select * from transferencia where estado = 'PENDIENTE' and imagen = true",
+			return session.createNativeQuery("select top 100 * from transferencia where estado = 'PENDIENTE' and imagen = true",
 					Transferencia.class).getResultList();
 		} finally {
 			session.close();
