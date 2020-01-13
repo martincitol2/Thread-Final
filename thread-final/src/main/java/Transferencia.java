@@ -42,8 +42,7 @@ public class Transferencia {
 
     private String estado;
 
-    @SuppressWarnings("unused")
-	private Boolean imagen;
+    private Boolean imagen;
 
     public String getEstado() {
         return estado;
@@ -96,6 +95,18 @@ public class Transferencia {
 	public Boolean getImagen() {
 		return imagen;
 	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setImagen(Boolean imagen) {
+		this.imagen = imagen;
+	}
+	
+	
+	
+	
 
  
     

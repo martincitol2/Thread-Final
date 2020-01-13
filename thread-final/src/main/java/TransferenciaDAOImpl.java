@@ -3,6 +3,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+
 public class TransferenciaDAOImpl implements TransferenciaDAO {
 
 	SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Transferencia.class)
@@ -25,12 +26,13 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 	public List<Transferencia> transferenciasPendientesSinImagen() {
 		try {
 			session.beginTransaction();
-			return session.createNativeQuery("select top 100 * from transferencia where estado = 'PENDIENTE' and imagen = true",
-					Transferencia.class).getResultList();
+			return session.createNativeQuery("select * from transferencia where estado = 'PENDIENTE' and imagen = true limit 0, 100",Transferencia.class).getResultList();
 		} finally {
 			session.close();
 			factory.close();
 		}
 	}
+	
+
 
 }
