@@ -21,8 +21,8 @@ public class SpringApplicationMain {
 
 		getTransferencias();
 
-		//ThreadPrincipal newHilo = new ThreadPrincipal();
-		//newHilo.start();
+		ThreadPrincipal newHilo = new ThreadPrincipal();
+		newHilo.start();
 
 	}
 
