@@ -16,6 +16,8 @@ import org.hibernate.annotations.GenericGenerator;
 	    query = "CALL getTransfers(:cbu_entrada,:cbu_salida,:monto)", 
 	    resultClass = Transferencia.class) 
 	})
+
+
 @Entity
 public class Transferencia {
 
@@ -44,7 +46,15 @@ public class Transferencia {
 
     private Boolean imagen;
 
-    public String getEstado() {
+    public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setImagen(Boolean imagen) {
+		this.imagen = imagen;
+	}
+
+	public String getEstado() {
         return estado;
     }
 
@@ -95,18 +105,6 @@ public class Transferencia {
 	public Boolean getImagen() {
 		return imagen;
 	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public void setImagen(Boolean imagen) {
-		this.imagen = imagen;
-	}
-	
-	
-	
-	
 
  
     

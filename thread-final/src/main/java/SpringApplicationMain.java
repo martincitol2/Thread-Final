@@ -1,12 +1,16 @@
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+
 
 
 
@@ -20,18 +24,22 @@ public class SpringApplicationMain {
 		logger.debug("Log4j appender configuration is successful !!");
 
 		getTransferencias();
-
+		
 		ThreadPrincipal newHilo = new ThreadPrincipal();
 		newHilo.start();
-
+		
+		
 	}
-
+	
 	private static void getTransferencias() throws Exception {
 
 		RestTemplate restTemplate = new RestTemplate();
 		 Transferencia[] result =  restTemplate.getForObject("http://5e1c761edb8a52001414cf97.mockapi.io/transferencia",Transferencia[].class);
-
-		List<Transferencia> listaDeTransferencia = new ArrayList<>();
+		 ObjectMapper mapper = new ObjectMapper();
+		 mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		 mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+		
+		 List<Transferencia> listaDeTransferencia = new ArrayList<>();
 		for(Transferencia a : result) {
 			listaDeTransferencia.add(a);
 			System.out.println(a.toString());

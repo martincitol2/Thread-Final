@@ -81,5 +81,19 @@ public class ConexionABaseDeDatos {
 			factory.close();
 		}
 	}
+	
+	public void cancelarTransferencia(long id) {
+		try {
+			session.beginTransaction();
+			session.createSQLQuery("update transferencia set estado = 'CANCELADO' where id = :id")
+					.addEntity(Transferencia.class).setParameter("id", (long) id).executeUpdate();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("no se pudo realizar la cancelacion" + e.getMessage());
+		} finally {
+			session.close();
+			factory.close();
+		}
+	}
 
 }
